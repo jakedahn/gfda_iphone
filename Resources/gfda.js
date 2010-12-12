@@ -1,5 +1,3 @@
-var tip = "foobar";
-
 function GFDA(){  
   return {
     both: function(){
@@ -13,18 +11,12 @@ function GFDA(){
     },
     _getRequest: function(gender){
       var xhr = Ti.Network.createHTTPClient();
-      xhr.onload = function(){
-        tip = JSON.parse(this.responseText).tip.body;
-      };
-      xhr.onreadystatechange = function(){
-        tip = JSON.parse(this.responseText).tip.body;
-        return tip;
-      };
       xhr.open("GET","http://goodfuckingdatingadvice.com/"+ gender +".json", false);
       xhr.send();
       
-      return xhr.onreadystatechange();
+      return JSON.parse(xhr.responseText).tip.body;
     }
   };
 }
+
 

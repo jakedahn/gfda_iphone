@@ -1,104 +1,95 @@
 Ti.include('gfda.js');
-
-// create tab group
-var navigation = Titanium.UI.createTabGroup();
 var req = new GFDA();
-//
-// create base UI tab and root window
-//
+
+function activate_him() {
+  his_btn.backgroundImage = "his_active.png";
+  his_btn.zIndex = 5;
+ 
+  her_btn.backgroundImage = "her_inactive.png";
+  her_btn.zIndex = 0;
+  both_label.text = req.his();
+}
+
+
+function activate_her() {
+  her_btn.backgroundImage = "her_active.png";
+  her_btn.zIndex = 5;
+  
+  his_btn.backgroundImage = "his_inactive.png";
+  his_btn.zIndex = 0;
+  both_label.text = req.hers();
+}
+
+function refresh_random() {
+  both_label.text = req.both();
+}
+
+
+
 
 // Windows
 
-var main_window = Titanium.UI.createWindow({  
+var main_window = Ti.UI.createWindow({  
     title:'For Both',
-    backgroundImage:'iphone/background.png'
+    backgroundImage:'background.png'
 });
 
-var his_window = Titanium.UI.createWindow({  
-    title:'For Him',
-    backgroundImage:'iphone/background.png'
+main_window.orientationModes = Titanium.UI.LANDSCAPE_RIGHT;
+
+var his_btn = Ti.UI.createButton({
+	height:125,
+	width:125,
+	top:15,
+	left: 45,
+	backgroundImage: 'his_inactive.png'
 });
 
-var her_window = Titanium.UI.createWindow({  
-    title:'For Her',
-    backgroundImage:'iphone/background.png'
-});
-
-
-// Tabs
-
-var his_window_tab = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    title:'For Him',
-    window:his_window
-});
-
-var main_window_tab = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    title:'For Both',
-    window:main_window
-});
-
-var b1 = Titanium.UI.createButton({
-	title:'send xhr request',
-	height:40,
-	width:200,
-	top:70
-});
-
-var her_window_tab = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    title:'For Her',
-    window:her_window
+var her_btn = Ti.UI.createButton({
+	height:125,
+	width:125,
+	top:15,
+	right: 45,
+	backgroundImage: 'her_inactive.png'
 });
 
 
 // Labels
 
-var label = Ti.UI.createLabel({
+var both_label = Ti.UI.createLabel({
 	text:"Appcelerator\nFTW!",
 	font:{fontSize:54,fontFamily:"TitilliumText22L"},
 	width:"auto",
 	textAlign:"center"
 });
 
-var her_label = Titanium.UI.createLabel({
-	color:'#999',
-	text:'hers',
-	font:{fontSize:72,fontFamily:'TitilliumText22L'},
-	textAlign:'center',
-	width:'auto'
+
+
+
+his_btn.addEventListener('click', function(){
+  activate_him();
 });
 
-var both_label = Titanium.UI.createLabel({
-	color:'#999',
-	text: "test",
-	font:{fontSize:72,fontFamily:'TitilliumText22L'},
-	textAlign:'center',
-	width:'auto'
+her_btn.addEventListener('click', function(){
+  activate_her();
 });
 
+Ti.Gesture.addEventListener('shake', function(){
+  if (his_btn.backgroundImage == "his_active.png") {
+    activate_him();
+  } else if(her_btn.backgroundImage == "her_active.png") {
+    activate_her();
+  } else {
+    refresh_random();
+  };
+})
 
-
-b1.addEventListener('click', function(){
-  both_label.text = req.both();
-  // Ti.API.info(req.both());
-});
 
 
 //
 //  initialize
 //
-his_window.add(label);
-her_window.add(her_label);
+
+main_window.open();
 main_window.add(both_label);
-main_window.add(b1);
-
-navigation.addTab(his_window_tab);  
-navigation.addTab(main_window_tab);  
-navigation.addTab(her_window_tab);  
-
-
-// open tab group
-navigation.open();
-navigation.setActiveTab(1);
+main_window.add(his_btn);
+main_window.add(her_btn);
