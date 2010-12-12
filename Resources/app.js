@@ -1,64 +1,104 @@
-// this sets the background color of the master UIView (when there are no windows/tab groups on it)
-Titanium.UI.setBackgroundColor('#000');
+Ti.include('gfda.js');
 
 // create tab group
-var tabGroup = Titanium.UI.createTabGroup();
-
-
+var navigation = Titanium.UI.createTabGroup();
+var req = new GFDA();
 //
 // create base UI tab and root window
 //
-var win1 = Titanium.UI.createWindow({  
-    title:'Tab 1',
-    backgroundColor:'#fff'
+
+// Windows
+
+var main_window = Titanium.UI.createWindow({  
+    title:'For Both',
+    backgroundImage:'iphone/background.png'
 });
-var tab1 = Titanium.UI.createTab({  
+
+var his_window = Titanium.UI.createWindow({  
+    title:'For Him',
+    backgroundImage:'iphone/background.png'
+});
+
+var her_window = Titanium.UI.createWindow({  
+    title:'For Her',
+    backgroundImage:'iphone/background.png'
+});
+
+
+// Tabs
+
+var his_window_tab = Titanium.UI.createTab({  
     icon:'KS_nav_views.png',
-    title:'Tab 1',
-    window:win1
+    title:'For Him',
+    window:his_window
 });
 
-var label1 = Titanium.UI.createLabel({
+var main_window_tab = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
+    title:'For Both',
+    window:main_window
+});
+
+var b1 = Titanium.UI.createButton({
+	title:'send xhr request',
+	height:40,
+	width:200,
+	top:70
+});
+
+var her_window_tab = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
+    title:'For Her',
+    window:her_window
+});
+
+
+// Labels
+
+var label = Ti.UI.createLabel({
+	text:"Appcelerator\nFTW!",
+	font:{fontSize:54,fontFamily:"TitilliumText22L"},
+	width:"auto",
+	textAlign:"center"
+});
+
+var her_label = Titanium.UI.createLabel({
 	color:'#999',
-	text:'I am Window 1',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
+	text:'hers',
+	font:{fontSize:72,fontFamily:'TitilliumText22L'},
 	textAlign:'center',
 	width:'auto'
 });
 
-win1.add(label1);
-
-//
-// create controls tab and root window
-//
-var win2 = Titanium.UI.createWindow({  
-    title:'Tab 2',
-    backgroundColor:'#fff'
-});
-var tab2 = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
-    title:'Tab 2',
-    window:win2
-});
-
-var label2 = Titanium.UI.createLabel({
+var both_label = Titanium.UI.createLabel({
 	color:'#999',
-	text:'I am Window 2',
-	font:{fontSize:20,fontFamily:'Helvetica Neue'},
+	text: "test",
+	font:{fontSize:72,fontFamily:'TitilliumText22L'},
 	textAlign:'center',
 	width:'auto'
 });
 
-win2.add(label2);
 
+
+b1.addEventListener('click', function(){
+  both_label.text = req.both();
+  // Ti.API.info(req.both());
+});
 
 
 //
-//  add tabs
+//  initialize
 //
-tabGroup.addTab(tab1);  
-tabGroup.addTab(tab2);  
+his_window.add(label);
+her_window.add(her_label);
+main_window.add(both_label);
+main_window.add(b1);
+
+navigation.addTab(his_window_tab);  
+navigation.addTab(main_window_tab);  
+navigation.addTab(her_window_tab);  
 
 
 // open tab group
-tabGroup.open();
+navigation.open();
+navigation.setActiveTab(1);
