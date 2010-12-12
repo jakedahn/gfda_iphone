@@ -2,26 +2,33 @@ Ti.include('gfda.js');
 var req = new GFDA();
 
 function activate_him() {
+  actInd.show();
   his_btn.backgroundImage = "his_active.png";
   his_btn.zIndex = 5;
  
   her_btn.backgroundImage = "her_inactive.png";
   her_btn.zIndex = 0;
-  both_label.text = req.his();
+  label.textAlign = "center";
+  label.text = req.his();
+  actInd.hide();
 }
 
 
 function activate_her() {
+  actInd.show();
   her_btn.backgroundImage = "her_active.png";
   her_btn.zIndex = 5;
   
   his_btn.backgroundImage = "his_inactive.png";
   his_btn.zIndex = 0;
-  both_label.text = req.hers();
+  label.text = req.hers();
+  actInd.hide();
 }
 
 function refresh_random() {
-  both_label.text = req.both();
+  actInd.show();
+  label.text = req.both();
+  actInd.hide();
 }
 
 
@@ -55,14 +62,24 @@ var her_btn = Ti.UI.createButton({
 
 // Labels
 
-var both_label = Ti.UI.createLabel({
-	text:"Appcelerator\nFTW!",
-	font:{fontSize:54,fontFamily:"TitilliumText22L"},
-	width:"auto",
-	textAlign:"center"
+var label = Ti.UI.createLabel({
+	text:"Shake to refresh, or touch one of the badges above.",
+	font:{fontSize:36,fontFamily:"TitilliumText22L"},
+	width:"80%",
+	height:"40%",
+	top: 200,
+	color: "#333333",
+	textAlign:"left"
 });
 
+var actInd = Titanium.UI.createActivityIndicator({
+    top:125,
+    height: 50,
+    width: 50,
+    style:Titanium.UI.iPhone.ActivityIndicatorStyle.DARK
+});
 
+actInd.show();
 
 
 his_btn.addEventListener('click', function(){
@@ -90,6 +107,8 @@ Ti.Gesture.addEventListener('shake', function(){
 //
 
 main_window.open();
-main_window.add(both_label);
+main_window.add(label);
 main_window.add(his_btn);
 main_window.add(her_btn);
+main_window.add(actInd);
+actInd.hide();
